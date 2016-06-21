@@ -1,8 +1,9 @@
 # Final Exam Revision
 Design of Algorithms [COMP20007]  
-Semester 1, 2016
+Semester 1, 2016  
+Written by Nate Bhurinat W
 
-A PDF file with proper LaTeX symbols could be found on the repository.
+PDF version could be found on [Github](https://github.com/ThePooE/comp20007/blob/master/comp20007_revision.pdf)
 
 ## Data Structure Operations
 Big-O of each data structure (type): (average) (worst)
