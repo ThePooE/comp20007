@@ -8,30 +8,30 @@ A PDF file with proper LaTeX symbols could be found on the repository.
 Big-O of each data structure (type): (average) (worst)
  
 * Array
-    * Access: O(1), O(1)
-    * Search: O(n), O(n)
-    * Insert: O(n), O(n)
-    * Delete O(n), O(n)
+    * Access: $$O(1)$$, $$O(1)$$
+    * Search: $$O(n)$$, $$O(n)$$
+    * Insert: $$O(n)$$, $$O(n)$$
+    * Delete: $$O(n)$$, $$O(n)$$
 
 -----
 
 * Linked-list
-    * Access: O(n), O(n)
-    * Search: O(n), O(n)
+    * Access: $$O(n)$$, $$O(n)$$
+    * Search: $$O(n)$$, $$O(n)$$
     * Insert: 
-        * Append - O(n), O(n)
-        * Prepend - O(1), O(1)
+        * Append - $$O(n)$$, $$O(n)$$
+        * Prepend - $$O(1)$$, $$O(1)$$
     * Delete:
-        * Front - O(1), O(1)
-        * Back - O(n), O(n)
+        * Front - $$O(1)$$, $$O(1)$$
+        * Back - $$O(n)$$, $$O(n)$$
 
 -----
 
 * Hash Table
     * Access - can’t be accessed…
-    * Search: O(1), O(n)
-    * Insert: O(1), O(n)
-    * Delete O(1), O(n)
+    * Search: $$O(1)$$, $$O(n)$$
+    * Insert: $$O(1)$$, $$O(n)$$
+    * Delete $$O(1)$$, $$O(n)$$
 
 ## Divide and Conquer
 
@@ -45,8 +45,8 @@ Big-O of each data structure (type): (average) (worst)
 ### Master’s Theorem
 
 
-\begin{equation}\label{master}
-T(n) = a T\left(\dfrac{n}{b}\right) + O(n^d)
+\begin{equation}
+    T(n) = a T\left(\dfrac{n}{b}\right) + O(n^d)
 \end{equation}
 
 
@@ -391,7 +391,9 @@ To store n, output n 1-bits then a 0-bit
 * A *semi-static* code knows the probability of occurrence of each symbol in the message
 * Shannon’s entropy theorem: the best bps for a message is
 
-$$ H(p) = -\sum\limits_{i=1}^n p_ilog_2p_i $$
+\begin{equation}
+    H(p)= -\sum\limits_{i=1}^n p\_{i} log\_{2p} i
+\end{equation}
 
 ### How to find best semi-static codewords
 
@@ -418,12 +420,16 @@ Suppose you want to hide a secret $$s$$
 * But both people working together can find $$s$$ 
     * Some computation on $$a$$, $$b$$ recovers $$s$$
 
-Ans: give one person rand r.  Give the other person r XOR s (bitwise).  
-Recover s by computing r XOR (r XOR s).  
- Think of s as a number in range [0,n-1]. Give one person r in the range *** and n Givetheotherpersons+rmodn ***andn  Recover s by computing (s+r) – r mod n
+Ans: give one person random $$r$$.  Give the other person $$r$$ XOR $$s$$ (bitwise).  
+Recover s by computing $$r$$ XOR ($$r$$ XOR $$s$$).  
+Ans: Think of s as a number in range $$[0,n-1]$$.  
+Give one person $$r$$ in the range *** and $$n$$  
+Give the other person $$s + r \text{ mod } n$$ *** and $$n$$  
+Recover s by computing $$(s+r) – r \text{ mod } n$$
 
 
 ## Dynamic Programming
+
 Each recursive call adds result to the table which increase the performance time as the algorithm doesn't need to re-calculate the same value again. Becareful of this case as Dynamic Programming is really close to distinct memory.
 
 1. Assign a table
@@ -432,3 +438,123 @@ Each recursive call adds result to the table which increase the performance time
 4. Repeat 3 recursively until the task is done
 
 Each step 3 calls reduce the running time of the algorithm as the access time of an array is $$O(1)$$.
+
+### Refer back to Fibonacci...
+Fibbonacci function is... 
+
+\begin{equation}
+    fib(n)=% 
+    \begin{cases}
+    0 &                 n = 0 \newline
+    1 &                 n = 1 \newline
+    fib(n−1)+fib(n−2) & n > 1
+    \end{cases}
+\end{equation}
+
+From this equation then we can see that the algorithm have redundancy as when computing fib(n-1) it has to compute fib(n-2) more than once.
+
+The problem of overlaping sub-problems are the essence of Dynamic Programming.
+
+## Knapsack Problem
+
+Weight and Value dilemma.. 
+
+* Maximise the total value of items you carry each day without exceeding the weight limit of your bag
+* With repitition and without
+* Greedy algorithm on *continuous* values: use value per weight
+
+### Sub-problems
+Let $$V(w)$$ be the maximum value with $$w$$ as a capacity.
+
+\begin{equation}
+V(w) = v_{i} + V(w – w_{i})
+\end{equation}
+
+Put in the highest value item that will fit
+
+### What is the order?
+
+$$ V(w) = max_{i} \left\{V(w - w_{i}) + v_{i} \right\} $$
+
+Choose maximum value from the past arrays + $$v_{i}$$
+
+$$ V(0) = 0 $$
+
+
+#### Pseudo CodeClearly order is {0, 1, 2, 3, ..., W }   
+Make a table and fill it in  
+
+~~~vTable[0] = 0  
+for w in 1 to W  
+    vTable[w] = max{ V[w – w[i]] + v[i] } for i 1 to n  
+~~~
+
+#### Time and Space  
+
+* $$O(Wn)$$ time
+* $$O(W)$$ space
+
+### What about without repetition?
+How do we know what items are already in $$V(w – w\{ i\})$$?
+
+$$ K(w, j) = max \left\{ K(w – w_{j}, \space j-1) + v_{j}, \space K(w, \space j-1) \right\} $$
+
+* Let $$K(w, j)$$ be the highest value with a knapsack of capacity w only using items $$1..j$$
+* Therefore, forms a table of $$(w \times j)$$
+* Trace backwards through the table
+
+#### Time and Space (without repetition)
+
+* How many things in the table? $$O(nW)$$
+* How much time per thing? $$O(1)$$
+* How much space per thing? $$O(1)$$
+
+##### Can the space be reduced?
+
+Only need to store two rows at any one time: the currentrow being developed, $$\space j$$, and the previous, $$\space j-1$$
+
+Thus, $$O(W)$$ space.
+
+## NP-Completeness
+
+* P - Polynomial
+* NP - Nondeterministic Polynomial time
+* NP-Complete
+    * A problem is NP-complete if it is in NP and all other problems in NP can be reduced to it.
+
+An “Efficient Algorithm”
+
+* Efficient = $$O(n)$$ or $$O(nlogn)$$ or $$O(n^{2})$$: a polynomial time algorithm
+* Inefficient = $$O(2^{n})$$ or $$O(3^{n})$$ or $$O(n^{n})$$ or $$O(n!)$$: exponential or factorial time
+
+Refer to table of comparison between *CSIRAC* (1000Hz) and *IBM EC12* (5.5GHz)
+
+### SAT Problems
+
+SAT is NP Problem   
+Conjunctive Normal Form (CNF)  
+CNF – clauses “and” together, each clause is “or” of variable x or its negation  
+
+* can verify solution in polynomial time 
+* cannot find a solution in polynomial time
+
+### Travelling Salesman
+
+Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city exactly once and returns to the origin city?
+
+Model it as a graph
+
+* If I give you a tour, how long does it take to verify if it is under budget? $$O(n)$$
+* How many possible tours are there? $$O(n!)$$
+
+### Reduction
+
+A reduction from a search problem A to a search problem B consists of two polynomial time algorithms.
+
+### Tools to solve NP-Complete problem
+
+* Hope $$n$$ is small
+* Use approximation (e.g. Set Cover)
+* Use search technique
+    * Branch and bound
+    * Backtracking    
